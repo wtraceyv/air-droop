@@ -25,7 +25,6 @@ def reset_db():
 	con.commit()
 	con.close()
 
-
 def insert_link(url):
 	con = sqlite3.connect(db_path)
 	cur = con.cursor()

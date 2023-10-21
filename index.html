@@ -2,13 +2,14 @@
 	<head>
 		<title>AirDroop</title>
 		<link rel="stylesheet" href="style.css">
+		<script src="scripts/js/useAPI.js"></script>
 	</head>
 	<body>
 		<img src="../content/img/shapes.png" class="background-pic">
 
 		<!-- Header -->
 <header class="linkrow flex-row-align">
-	<h2>AirDroop</h2>
+	<h2>AirDroop babee</h2>
 	<button class="btn"><a href="../link-add-page.html">Add Link +</a></button>
 	<button class="btn"><a href="../download">Downloads</a></button>
 </header>
@@ -16,19 +17,12 @@
 		<!-- insert link templates here -->
 		<div>
 
-<div class="linkrow flex-row-align">
-	<a href="https://open.spotify.com/">
-		https://open.spotify.com/
-	</a>
-	<button class="btn--negative">To trash</button>
-</div>
-<div class="linkrow flex-row-align">
-	<a href="https://google.com/">
-		https://google.com/
-	</a>
-	<button class="btn--negative">To trash</button>
-</div>
 
 		</div>
+
+		<div style="display: flex; justify-content: center;">
+			<button class="btn--negative" onclick="resetLinks()">Clear Links</button>
+		</div>
+
 	</body>
 </html>

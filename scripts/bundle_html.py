@@ -5,6 +5,13 @@ api_urls = {
 	"getlinks": "http://localhost:5000/getlinks"
 }
 
+templates = {
+	"mainpage": "../templates/mainpage.html",
+	"rowlinks": "../templates/linkrow.html",
+	"header": "../templates/header.html",
+	"temp_index": "../temp.html"
+}
+
 # helpers
 def replace_tag_text(html_read_handle, tag, replace_with):
 	result = ""
@@ -30,12 +37,6 @@ def replace_tag_with_template(html_read, tag, template, html_is_filehandle=True,
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-# main file handles
-mainpage_read = open('../templates/mainpage.html', 'r')
-rowlinks_template_read = open('../templates/linkrow.html', 'r')
-header_template_read = open('../templates/header.html', 'r')
-
-index_write = open('../index.html', 'w')
 
 def bundle_link(url):
 	with open('../templates/linkrow.html', 'r') as template_read:
@@ -44,18 +45,19 @@ def bundle_link(url):
 def bundle_all_links():
 	result = ""
 	response = requests.get(api_urls["getlinks"]).json()
-
 	for link in response:
 		newhtml = bundle_link(link)
 		result += newhtml
 	return result
 
-def bundle_header(header_template_handle):
-	return replace_tag_with_template(mainpage_read, "<header>", header_template_handle)
+def bundle_header():
+	with open(templates["header"], 'r') as header_handle:
+		with open(templates["mainpage"], 'r') as mainpage_read:
+			return replace_tag_with_template(mainpage_read, "<header>", header_handle)
 
 def bundle_index(index_handle):
 	with open('../temp.html', 'w') as temp_write:
-		temp_write.write(bundle_header(header_template_read))
+		temp_write.write(bundle_header())
 
 	with open('../temp.html', 'r') as temp_read:
 		bundled_links = bundle_all_links()
@@ -71,13 +73,9 @@ def bundle_index(index_handle):
 		
 	os.remove('../temp.html')
 
+def bundle_full():
+	with open('../index.html', 'w') as index_write:
+		bundle_index(index_write)
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-bundle_index(index_write)
-	
-mainpage_read.close()
-header_template_read.close()
-rowlinks_template_read.close()
-index_write.close()
-
+if __name__ == '__main__':
+	bundle_full()

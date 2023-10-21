@@ -16,4 +16,4 @@
 #      "url": "https://migoski.net/"
 #  }
 
-# POST http://localhost:5000/resetdb HTTP/1.1
+POST http://localhost:5000/resetdb HTTP/1.1
