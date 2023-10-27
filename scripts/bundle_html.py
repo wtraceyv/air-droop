@@ -1,8 +1,12 @@
 import os
 import requests
+from helpers import replace_tag_text, replace_tag_with_template
+
+api_ip = 'localhost'
+api_base = f'http://{api_ip}:5000'
 
 api_urls = {
-	"getlinks": "http://localhost:5000/getlinks"
+	"getlinks": f'{api_base}/getlinks'
 }
 
 templates = {
@@ -12,31 +16,7 @@ templates = {
 	"temp_index": "../temp.html"
 }
 
-# helpers
-def replace_tag_text(html_read_handle, tag, replace_with):
-	result = ""
-	for line in html_read_handle.readlines():
-		if tag in line:
-			line = line.replace(tag, replace_with)
-		result += line
-	return result
-
-def replace_tag_with_template(html_read, tag, template, html_is_filehandle=True, template_is_filehandle=True):
-	result = ""
-	html_read_lines = html_read.readlines() if html_is_filehandle else html_read.splitlines(True)
-	template_read_lines = template.readlines() if template_is_filehandle else template.splitlines(True)
-
-	for line in html_read_lines:
-		if tag in line:
-			for newline in template_read_lines:
-				result += newline
-			continue
-		result += line
-
-	return result
-
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
 
 def bundle_link(url):
 	with open('../templates/linkrow.html', 'r') as template_read:
@@ -50,6 +30,7 @@ def bundle_all_links():
 		result += newhtml
 	return result
 
+# Returns text of main page with header inserted
 def bundle_header():
 	with open(templates["header"], 'r') as header_handle:
 		with open(templates["mainpage"], 'r') as mainpage_read:

@@ -1,9 +1,10 @@
-// Export methods for calling the python API from html
+// methods for calling the python API from html
 
-const apiURL = "http://localhost:5000"
+const hostIP = "localhost"
+const apiURL = `http://${hostIP}:5000`
 
-function addUrl() {
-	fetch(apiURL + "/addlink", {
+async function addUrl() {
+	await fetch(apiURL + "/addlink", {
 		method: "POST",
 		headers: {
 			'Content-Type': "application/json",
@@ -12,26 +13,30 @@ function addUrl() {
 		body: JSON.stringify({
 			"url": document.getElementById("new-link-text").value,
 		}),
+	}).then(() => {
+		document.getElementById("new-link-text").value = "";
 	});
 }
 
-function resetLinks() {
-	fetch(apiURL + "/resetdb", {
-		method: "POST",
-	});
-}
-
-// TODO: nope need IDs
-function deleteUrl() {
-	fetch(apiURL + "/deletelink", {
+async function deleteUrl(url) {
+	await fetch(apiURL + "/deletelink", {
 		method: "POST",
 		headers: {
 			'Content-Type': "application/json",
 			'Accept': "application/json",
 		},
 		body: JSON.stringify({
-			// FIXME: put the fix here
-			"url": document.getElementById("new-link-text").value,
+			"url": url,
 		}),
+	}).then(() => {
+		window.location.reload();
+	});
+}
+
+async function resetLinks() {
+	await fetch(apiURL + "/resetdb", {
+		method: "POST",
+	}).then(() => {
+		window.location.reload();
 	});
 }
